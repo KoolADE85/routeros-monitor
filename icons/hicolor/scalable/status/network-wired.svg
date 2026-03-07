@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs>
+  <linearGradient id="hex" x1="100%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#87CEEB"/>
+    <stop offset="100%" stop-color="#1a2a6c"/>
+  </linearGradient>
+</defs>
+<path fill="none" stroke="url(#hex)" stroke-width="1" d="M8 1L15 4.5V11.5L8 15L1 11.5V4.5Z"/>
+<rect fill="#fff" x="5.5" y="3" width="5" height="2.5" rx="0.5"/>
+<rect fill="#fff" x="7.5" y="5.5" width="1" height="1"/>
+<rect fill="#fff" x="3" y="6.5" width="10" height="1"/>
+<rect fill="#fff" x="4.5" y="7.5" width="1" height="1"/>
+<rect fill="#fff" x="10.5" y="7.5" width="1" height="1"/>
+<rect fill="#fff" x="3" y="8.5" width="4" height="2.5" rx="0.5"/>
+<rect fill="#fff" x="9" y="8.5" width="4" height="2.5" rx="0.5"/>
+</svg>

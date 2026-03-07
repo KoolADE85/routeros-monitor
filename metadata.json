@@ -1,0 +1,9 @@
+{
+  "uuid": "mikrotik@com.adrianborrmann",
+  "name": "MikroTik Internet Monitor",
+  "description": "Show MikroTik router's internet status in the GNOME Shell top bar.",
+  "version": 1,
+  "shell-version": ["45", "46", "47", "48", "49"],
+  "settings-schema": "org.gnome.shell.extensions.mikrotik",
+  "url": ""
+}

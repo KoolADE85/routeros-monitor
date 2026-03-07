@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.mikrotik"
+          path="/org/gnome/shell/extensions/mikrotik/">
+
+    <key name="router-host" type="s">
+      <default>'192.168.88.1'</default>
+      <summary>Router hostname or IP address</summary>
+    </key>
+
+    <key name="router-user" type="s">
+      <default>''</default>
+      <summary>RouterOS REST API username</summary>
+    </key>
+
+    <key name="router-password" type="s">
+      <default>''</default>
+      <summary>RouterOS REST API password</summary>
+    </key>
+
+    <key name="auto-detect" type="b">
+      <default>true</default>
+      <summary>Automatically detect the internet interface</summary>
+    </key>
+
+    <key name="interface-type" type="s">
+      <default>'lte'</default>
+      <summary>MikroTik interface type to monitor</summary>
+    </key>
+
+    <key name="interface-name" type="s">
+      <default>'lte1'</default>
+      <summary>Interface name on the router</summary>
+    </key>
+
+    <key name="poll-interval" type="i">
+      <default>2</default>
+      <range min="1" max="300"/>
+      <summary>Polling interval in seconds</summary>
+    </key>
+
+    <key name="display-mode" type="s">
+      <default>'panel-right'</default>
+      <summary>Where to show the LTE indicator</summary>
+    </key>
+
+    <key name="router-port" type="i">
+      <default>0</default>
+      <range min="0" max="65535"/>
+      <summary>REST API port (0 = default)</summary>
+    </key>
+
+    <key name="use-https" type="b">
+      <default>false</default>
+      <summary>Use HTTPS for REST API requests</summary>
+    </key>
+
+    <key name="use-gnome-icons" type="b">
+      <default>false</default>
+      <summary>Use GNOME themed icons instead of custom icons</summary>
+    </key>
+
+  </schema>
+</schemalist>
