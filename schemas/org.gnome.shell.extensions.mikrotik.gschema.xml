@@ -15,7 +15,12 @@
 
     <key name="router-password" type="s">
       <default>''</default>
-      <summary>RouterOS REST API password</summary>
+      <summary>RouterOS REST API password (fallback if keyring unavailable)</summary>
+    </key>
+
+    <key name="password-updated" type="i">
+      <default>0</default>
+      <summary>Random value written when password changes in keyring, to trigger settings signal</summary>
     </key>
 
     <key name="auto-detect" type="b">

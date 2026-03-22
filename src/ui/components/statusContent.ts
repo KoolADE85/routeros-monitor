@@ -56,6 +56,7 @@ export class StatusContent extends PopupMenu.PopupMenuSection {
       sep,
       ...this._metricHandles.map((h) => h.item),
     ];
+    detailItems.forEach((i) => (i.visible = false));
 
     this._headlineItem.activate = () => {
       this._expanded = !this._expanded;

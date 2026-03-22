@@ -4,6 +4,7 @@ import GObject from "gi://GObject";
 
 import { RouterOsApi, type RouterOsConfig } from "./api.js";
 import { detectInternetInterface } from "./detect.js";
+import { lookupPassword } from "./keyring.js";
 import { queryEthernetStatus } from "./interfaces/ethernet.js";
 import { queryLteStatus } from "./interfaces/lte.js";
 import {
@@ -79,11 +80,12 @@ export const RouterMonitor = GObject.registerClass(
     }
 
     private _readConfig(): RouterOsConfig {
+      const { password } = lookupPassword(this._settings);
       return {
         host: this._settings.get_string("router-host"),
         port: this._settings.get_int("router-port"),
         user: this._settings.get_string("router-user"),
-        password: this._settings.get_string("router-password"),
+        password,
         useHttps: this._settings.get_boolean("use-https"),
       };
     }

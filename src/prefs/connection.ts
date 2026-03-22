@@ -2,6 +2,8 @@ import Adw from "gi://Adw";
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk";
 
+import { lookupPassword, storePassword } from "../backend/keyring.js";
+
 export function buildConnectionGroup(
   settings: Gio.Settings,
 ): Adw.PreferencesGroup {
@@ -15,13 +17,21 @@ export function buildConnectionGroup(
   settings.bind("router-user", userRow, "text", Gio.SettingsBindFlags.DEFAULT);
   group.add(userRow);
 
-  const passwordRow = new Adw.PasswordEntryRow({ title: "API Password" });
-  settings.bind(
-    "router-password",
-    passwordRow,
-    "text",
-    Gio.SettingsBindFlags.DEFAULT,
+  const { password, fromKeyring } = lookupPassword(settings);
+  const passwordRow = new Adw.PasswordEntryRow({
+    title: "API Password",
+    text: password,
+  });
+  passwordRow.connect("changed", () =>
+    storePassword(settings, passwordRow.text),
   );
+  if (!fromKeyring) {
+    const warning = new Gtk.Image({ icon_name: "security-low-symbolic" });
+    warning.set_tooltip_text(
+      "Keyring unavailable — password stored in plain text",
+    );
+    passwordRow.add_suffix(warning);
+  }
   group.add(passwordRow);
 
   const portRow = new Adw.SpinRow({
