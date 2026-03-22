@@ -13,6 +13,9 @@ on:
         default: "main"
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   package-and-release:
     runs-on: ubuntu-latest
@@ -42,8 +45,14 @@ jobs:
           ARTIFACT=$(ls dist/*.zip 2>/dev/null | head -n 1)
           echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
 
+      - name: Force-create tag at HEAD
+        run: |
+          git tag -f ${{ github.event.inputs.release_version }}
+          git push origin ${{ github.event.inputs.release_version }} --force
+
       - name: Create GitHub Release and Upload Artifact
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.release_version }}
           files: ${{ steps.find_artifact.outputs.artifact }}
+          draft: true
