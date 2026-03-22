@@ -4,7 +4,7 @@ import { RouterMonitor } from "./backend/index.js";
 import type { InterfaceStatus } from "./backend/types.js";
 import { UIStatusPresenter } from "./ui/index.js";
 
-export default class MikroTikExtension extends Extension {
+export default class RouterOSMonitor extends Extension {
   private _routerMonitor: RouterMonitor | null = null;
   private _ui: UIStatusPresenter | null = null;
 

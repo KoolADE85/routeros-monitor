@@ -5,13 +5,13 @@ import { buildConnectionGroup, buildHintGroup } from "./prefs/connection.js";
 import { buildDisplayGroup } from "./prefs/display.js";
 import { buildInterfaceGroup } from "./prefs/interface.js";
 
-export default class MikroTikPreferences extends ExtensionPreferences {
+export default class RouterOSMonitorPreferences extends ExtensionPreferences {
   // eslint-disable-next-line @typescript-eslint/require-await
   async fillPreferencesWindow(window: Adw.PreferencesWindow): Promise<void> {
     const settings = this.getSettings();
 
     const page = new Adw.PreferencesPage({
-      title: "MikroTik Monitor",
+      title: "RouterOS Monitor",
       iconName: "network-cellular-symbolic",
     });
     window.add(page);

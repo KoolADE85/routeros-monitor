@@ -19,110 +19,108 @@ const BOX_MAP: Record<string, PanelBox> = {
   "panel-right": "right",
 };
 
-export const PanelIndicator = GObject.registerClass(
-  {
-    Signals: {
-      "refresh-requested": {},
-    },
-  },
-  class PanelIndicator extends PanelMenu.Button implements UIAdapter {
-    private _icon!: St.Icon;
-    private _bannerSection!: PopupMenu.PopupMenuSection;
-    private _section!: PopupMenu.PopupMenuSection;
-    private _refreshItem!: PopupMenu.PopupMenuItem;
-    private _content: StatusContent | null = null;
-    private _errorContent: ErrorContent | null = null;
-    private _banner: PopupMenu.PopupBaseMenuItem | null = null;
+class PanelIndicator extends PanelMenu.Button implements UIAdapter {
+  private _icon!: St.Icon;
+  private _bannerSection!: PopupMenu.PopupMenuSection;
+  private _section!: PopupMenu.PopupMenuSection;
+  private _refreshItem!: PopupMenu.PopupMenuItem;
+  private _content: StatusContent | null = null;
+  private _errorContent: ErrorContent | null = null;
+  private _banner: PopupMenu.PopupBaseMenuItem | null = null;
 
-    constructor(displayMode: string) {
-      super(0.0, "MikroTik Monitor");
+  constructor(displayMode: string) {
+    super(0.0, "RouterOS Monitor");
 
-      this._icon = new St.Icon({
-        icon_name: "network-cellular-signal-none-symbolic",
-        style_class: "system-status-icon",
-      });
-      this.add_child(this._icon);
+    this._icon = new St.Icon({
+      icon_name: "network-cellular-signal-none-symbolic",
+      style_class: "system-status-icon",
+    });
+    this.add_child(this._icon);
 
-      const menu = this.menu as PopupMenu.PopupMenu;
+    const menu = this.menu as PopupMenu.PopupMenu;
 
-      this._bannerSection = new PopupMenu.PopupMenuSection();
-      menu.addMenuItem(this._bannerSection);
+    this._bannerSection = new PopupMenu.PopupMenuSection();
+    menu.addMenuItem(this._bannerSection);
 
-      this._section = new PopupMenu.PopupMenuSection();
-      menu.addMenuItem(this._section);
+    this._section = new PopupMenu.PopupMenuSection();
+    menu.addMenuItem(this._section);
 
-      menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+    menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-      this._refreshItem = new PopupMenu.PopupMenuItem("Refresh Now");
-      this._refreshItem.activate = () => this.emit("refresh-requested");
-      menu.addMenuItem(this._refreshItem);
+    this._refreshItem = new PopupMenu.PopupMenuItem("Refresh Now");
+    this._refreshItem.activate = () => this.emit("refresh-requested");
+    menu.addMenuItem(this._refreshItem);
 
-      const prefsItem = new PopupMenu.PopupMenuItem("Preferences");
-      prefsItem.connect("activate", () => {
-        Extension.lookupByURL(import.meta.url)?.openPreferences();
-      });
-      menu.addMenuItem(prefsItem);
+    const prefsItem = new PopupMenu.PopupMenuItem("Preferences");
+    prefsItem.connect("activate", () => {
+      Extension.lookupByURL(import.meta.url)?.openPreferences();
+    });
+    menu.addMenuItem(prefsItem);
 
-      const extension = Extension.lookupByURL(import.meta.url);
-      const box = BOX_MAP[displayMode] ?? "right";
-      Main.panel.addToStatusArea(extension?.uuid ?? "", this, -1, box);
-    }
+    const extension = Extension.lookupByURL(import.meta.url);
+    const box = BOX_MAP[displayMode] ?? "right";
+    Main.panel.addToStatusArea(extension?.uuid ?? "", this, -1, box);
+  }
 
-    showStatus(status: InterfaceStatus): void {
-      if (!this._content) {
-        this._clearSection();
-        this._content = new StatusContent(status);
-        this._section.addMenuItem(this._content);
-      }
-      this._content.update(status);
-    }
-
-    showBanner(message: string): void {
-      if (!this._banner) {
-        this._banner = new PopupMenu.PopupBaseMenuItem({ reactive: false });
-        this._banner.add_child(
-          new St.Icon({
-            icon_name: "dialog-warning-symbolic",
-            style_class: "popup-menu-icon",
-          }),
-        );
-        this._banner.add_child(new St.Label({ text: message }));
-        this._bannerSection.addMenuItem(this._banner);
-      }
-      this._banner.visible = true;
-    }
-
-    hideBanner(): void {
-      if (this._banner) this._banner.visible = false;
-    }
-
-    showError(error: string): void {
+  showStatus(status: InterfaceStatus): void {
+    if (!this._content) {
       this._clearSection();
-      this._errorContent = new ErrorContent(error);
-      this._section.addMenuItem(this._errorContent);
+      this._content = new StatusContent(status);
+      this._section.addMenuItem(this._content);
     }
+    this._content.update(status);
+  }
 
-    setIcon(icon: Gio.Icon): void {
-      this._icon.gicon = icon;
+  showBanner(message: string): void {
+    if (!this._banner) {
+      this._banner = new PopupMenu.PopupBaseMenuItem({ reactive: false });
+      this._banner.add_child(
+        new St.Icon({
+          icon_name: "dialog-warning-symbolic",
+          style_class: "popup-menu-icon",
+        }),
+      );
+      this._banner.add_child(new St.Label({ text: message }));
+      this._bannerSection.addMenuItem(this._banner);
     }
+    this._banner.visible = true;
+  }
 
-    setVisible(): void {
-      // panel indicator is always visible once added
-    }
+  hideBanner(): void {
+    if (this._banner) this._banner.visible = false;
+  }
 
-    shutdown(): void {
-      this._content?.destroy();
-      this._errorContent?.destroy();
-      this._banner?.destroy();
-      this.destroy();
-    }
+  showError(error: string): void {
+    this._clearSection();
+    this._errorContent = new ErrorContent(error);
+    this._section.addMenuItem(this._errorContent);
+  }
 
-    private _clearSection(): void {
-      this._content?.destroy();
-      this._content = null;
-      this._errorContent?.destroy();
-      this._errorContent = null;
-      this._section.removeAll();
-    }
-  },
+  setIcon(icon: Gio.Icon): void {
+    this._icon.gicon = icon;
+  }
+
+  setVisible(): void {
+    // panel indicator is always visible once added
+  }
+
+  shutdown(): void {
+    this._content?.destroy();
+    this._errorContent?.destroy();
+    this._banner?.destroy();
+    this.destroy();
+  }
+
+  private _clearSection(): void {
+    this._content?.destroy();
+    this._content = null;
+    this._errorContent?.destroy();
+    this._errorContent = null;
+    this._section.removeAll();
+  }
+}
+
+export default GObject.registerClass(
+  { Signals: { "refresh-requested": {} } },
+  PanelIndicator,
 );
