@@ -19,6 +19,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["dist/", "eslint.config.js"],
+    ignores: ["build/", "eslint.config.js"],
   },
 );

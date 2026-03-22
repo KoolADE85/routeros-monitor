@@ -4,7 +4,7 @@
     "moduleResolution": "NodeNext",
     "target": "ES2023",
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./build",
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true

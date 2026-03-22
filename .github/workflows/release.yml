@@ -39,7 +39,7 @@ jobs:
       - name: Find artifact
         id: find_artifact
         run: |
-          ARTIFACT=$(ls *.zip 2>/dev/null | head -n 1)
+          ARTIFACT=$(ls dist/*.zip 2>/dev/null | head -n 1)
           echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release and Upload Artifact
