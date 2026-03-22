@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.gnome.shell.extensions.mikrotik"
-          path="/org/gnome/shell/extensions/mikrotik/">
+  <schema id="@SCHEMA_ID@"
+          path="/@SCHEMA_PATH@/">
 
     <key name="router-host" type="s">
-      <default>'192.168.88.1'</default>
+      <default>'router.lan'</default>
       <summary>Router hostname or IP address</summary>
     </key>
 
@@ -30,7 +30,7 @@
 
     <key name="interface-type" type="s">
       <default>'lte'</default>
-      <summary>MikroTik interface type to monitor</summary>
+      <summary>RouterOS interface type to monitor</summary>
     </key>
 
     <key name="interface-name" type="s">
@@ -60,9 +60,9 @@
       <summary>Use HTTPS for REST API requests</summary>
     </key>
 
-    <key name="use-gnome-icons" type="b">
+    <key name="use-default-icons" type="b">
       <default>false</default>
-      <summary>Use GNOME themed icons instead of custom icons</summary>
+      <summary>Use default theme icons instead of custom icons</summary>
     </key>
 
   </schema>

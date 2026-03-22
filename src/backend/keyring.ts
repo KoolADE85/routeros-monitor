@@ -2,17 +2,19 @@ import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 import Secret from "gi://Secret";
 
-const SCHEMA_ID = "org.gnome.shell.extensions.mikrotik";
-
-const schema = Secret.Schema.new(
-  SCHEMA_ID,
-  Secret.SchemaFlags.DONT_MATCH_NAME,
-  {
-    purpose: Secret.SchemaAttributeType.STRING,
-  },
-);
-
 const ATTRS = { purpose: "router-password" };
+
+let _schema: Secret.Schema | null = null;
+function getSchema(settings: Gio.Settings): Secret.Schema {
+  if (!_schema) {
+    _schema = Secret.Schema.new(
+      settings.schema_id,
+      Secret.SchemaFlags.DONT_MATCH_NAME,
+      { purpose: Secret.SchemaAttributeType.STRING },
+    );
+  }
+  return _schema;
+}
 
 // The sync keyring calls block the shell if the secrets service isn't running
 // (e.g. nested GNOME Shell test sessions). Fall back to GSettings in that case.
@@ -46,7 +48,7 @@ export function lookupPassword(settings: Gio.Settings): {
       fromKeyring: false,
     };
   return {
-    password: Secret.password_lookup_sync(schema, ATTRS, null),
+    password: Secret.password_lookup_sync(getSchema(settings), ATTRS, null),
     fromKeyring: true,
   };
 }
@@ -57,7 +59,7 @@ export function storePassword(settings: Gio.Settings, password: string): void {
     return;
   }
   Secret.password_store_sync(
-    schema,
+    getSchema(settings),
     ATTRS,
     Secret.COLLECTION_DEFAULT,
     "RouterOS Monitor — Router Password",
@@ -74,6 +76,6 @@ export function clearPassword(settings: Gio.Settings): void {
     settings.set_string("router-password", "");
     return;
   }
-  Secret.password_clear_sync(schema, ATTRS, null);
+  Secret.password_clear_sync(getSchema(settings), ATTRS, null);
   settings.set_int("password-updated", Math.floor(Math.random() * 2147483647));
 }

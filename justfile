@@ -1,6 +1,7 @@
-uuid := "mikrotik@com.adrianborrmann"
+uuid := `jq -r .uuid metadata.json`
+schema_id := `jq -r '.["settings-schema"]' metadata.json`
+schema_path := replace(schema_id, ".", "/")
 dist := "dist"
-schema_dir := "schemas"
 install_dir := env("HOME") / ".local/share/gnome-shell/extensions" / uuid
 
 build:
@@ -8,8 +9,9 @@ build:
     npm run lint
     npm run build
     @cp metadata.json {{ dist }}/
-    @cp -r {{ schema_dir }} {{ dist }}/
-    glib-compile-schemas {{ dist }}/{{ schema_dir }}/
+    @mkdir -p {{ dist }}/schemas
+    sed -e 's/@SCHEMA_ID@/{{ schema_id }}/g' -e 's|@SCHEMA_PATH@|{{ schema_path }}|g' schemas/gschema.xml.template > {{ dist }}/schemas/{{ schema_id }}.gschema.xml
+    glib-compile-schemas {{ dist }}/schemas/
     @cp -r icons {{ dist }}/
 
 pack: build

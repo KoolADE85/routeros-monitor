@@ -1,9 +1,8 @@
 {
-  "uuid": "mikrotik@com.adrianborrmann",
-  "name": "MikroTik Internet Monitor",
-  "description": "Show MikroTik router's internet status in the GNOME Shell top bar.",
-  "version": 1,
+  "uuid": "routeros-monitor@com.adrianborrmann",
+  "name": "RouterOS Monitor",
+  "description": "Monitor your Mikrotik RouterOS from the GNOME Shell top bar. Using RouterOS's `detect-internet` feature, you can see at a glance the if your router's ethernet or LTE interface is internet-connected. The LTE interface also shows sparklines that monitor cellular signal strength.\nThis extension can copy error messages to the clipboard. Not affiliated with MikroTik.",
   "shell-version": ["45", "46", "47", "48", "49"],
-  "settings-schema": "org.gnome.shell.extensions.mikrotik",
-  "url": ""
+  "settings-schema": "org.gnome.shell.extensions.routeros-monitor",
+  "url": "https://github.com/KoolADE85/routeros-monitor"
 }

@@ -41,7 +41,7 @@ export const RouterMonitor = GObject.registerClass(
       this._cancellable = new Gio.Cancellable();
 
       this._settingsId = settings.connect("changed", (_s, key) => {
-        if (key === "display-mode" || key === "use-gnome-icons") return;
+        if (key === "display-mode" || key === "use-default-icons") return;
         this._api.configure(this._readConfig());
         this._reset();
       });

@@ -34,17 +34,17 @@ export function buildDisplayGroup(
   });
   group.add(modeRow);
 
-  const gnomeIconsRow = new Adw.SwitchRow({
-    title: "Use GNOME Icons",
-    subtitle: "Use default GNOME themed icons instead of custom icons",
+  const defaultIconsRow = new Adw.SwitchRow({
+    title: "Use Default Icons",
+    subtitle: "Use default themed icons instead of custom icons",
   });
   settings.bind(
-    "use-gnome-icons",
-    gnomeIconsRow,
+    "use-default-icons",
+    defaultIconsRow,
     "active",
     Gio.SettingsBindFlags.DEFAULT,
   );
-  group.add(gnomeIconsRow);
+  group.add(defaultIconsRow);
 
   return group;
 }

@@ -6,7 +6,7 @@ import { InterfaceType, type InterfaceStatus } from "../../backend/types.js";
 
 export class StatusIcon {
   private _extensionPath: string;
-  private _useGnomeIcons: boolean;
+  private _useDefaultIcons: boolean;
   private _settings: Gio.Settings;
   private _settingsId: number;
   private _status: InterfaceStatus | null = null;
@@ -17,9 +17,9 @@ export class StatusIcon {
     this._extensionPath = extension.path;
     const settings = extension.getSettings();
     this._settings = settings;
-    this._useGnomeIcons = settings.get_boolean("use-gnome-icons");
-    this._settingsId = settings.connect("changed::use-gnome-icons", () => {
-      this._useGnomeIcons = settings.get_boolean("use-gnome-icons");
+    this._useDefaultIcons = settings.get_boolean("use-default-icons");
+    this._settingsId = settings.connect("changed::use-default-icons", () => {
+      this._useDefaultIcons = settings.get_boolean("use-default-icons");
     });
   }
 
@@ -68,7 +68,7 @@ export class StatusIcon {
   }
 
   private _resolve(iconName: string): Gio.Icon {
-    if (!this._useGnomeIcons) {
+    if (!this._useDefaultIcons) {
       const file = Gio.File.new_for_path(
         `${this._extensionPath}/icons/hicolor/scalable/status/${iconName}.svg`,
       );
