@@ -11,7 +11,7 @@ build:
     npm run build
     @cp metadata.json {{ build_dir }}/
     @mkdir -p {{ build_dir }}/schemas
-    sed -e 's/@SCHEMA_ID@/{{ schema_id }}/g' -e 's|@SCHEMA_PATH@|{{ schema_path }}|g' schemas/gschema.xml.template > {{ build_dir }}/schemas/{{ schema_id }}.gschema.xml
+    @sed -e 's/@SCHEMA_ID@/{{ schema_id }}/g' -e 's|@SCHEMA_PATH@|{{ schema_path }}|g' schemas/gschema.xml.template > {{ build_dir }}/schemas/{{ schema_id }}.gschema.xml
     glib-compile-schemas {{ build_dir }}/schemas/
     @cp -r icons {{ build_dir }}/
 

@@ -29,6 +29,10 @@
     </key>
 
     <key name="interface-type" type="s">
+      <choices>
+        <choice value="lte"/>
+        <choice value="ether"/>
+      </choices>
       <default>'lte'</default>
       <summary>RouterOS interface type to monitor</summary>
     </key>
@@ -45,8 +49,14 @@
     </key>
 
     <key name="display-mode" type="s">
-      <default>'panel-right'</default>
-      <summary>Where to show the LTE indicator</summary>
+      <choices>
+        <choice value="panel-left"/>
+        <choice value="panel-center"/>
+        <choice value="panel-right"/>
+        <choice value="quick-settings"/>
+      </choices>
+      <default>'panel-left'</default>
+      <summary>Where to show the status indicator</summary>
     </key>
 
     <key name="router-port" type="i">
