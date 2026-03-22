@@ -1,0 +1,49 @@
+name: Package and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Release version (e.g., v1.2.3)"
+        required: true
+        type: string
+      branch:
+        description: "Branch to release from"
+        required: false
+        default: "main"
+        type: string
+
+jobs:
+  package-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install just
+        run: npm install -g just-install
+
+      - name: Package artifact
+        run: just pack
+
+      - name: Find artifact
+        id: find_artifact
+        run: |
+          ARTIFACT=$(ls *.zip 2>/dev/null | head -n 1)
+          echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release and Upload Artifact
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.release_version }}
+          files: ${{ steps.find_artifact.outputs.artifact }}
